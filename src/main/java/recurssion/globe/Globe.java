@@ -42,23 +42,30 @@ public class Globe {
         }
     }
 
-    private int processContinent(int row, int col, Continent continent) {
-        if (isProcessed(row, col)) // O(1)
-            return 0;
+    private void processContinent(int row, int col, Continent continent) {
+        if (isProcessed(row, col))
+            return;
 
-        Country country = new Country(row, col);
-        continent.addCountry(country);
+        continent.addCountry(new Country(row, col));
 
-        sites[row][col] = Site.WATER;
-        return 1 // Center
-                + processContinent(row - 1, col - 1, continent) // NW
-                + processContinent(row - 1, col, continent) // N
-                + processContinent(row - 1, col + 1, continent) // NE
-                + processContinent(row, col - 1, continent) // W
-                + processContinent(row, col + 1, continent) // E
-                + processContinent(row + 1, col - 1, continent) // SW
-                + processContinent(row + 1, col, continent) // S
-                + processContinent(row + 1, col + 1, continent);
+        sites[row][col] = Site.WATER; // Dont count this country again
+
+        int[][] coordinateDelta = new int[][]{
+                {-1, 0}, // N
+                {-1, -1}, // NW
+                {-1, 1}, // NE
+
+                {0, -1}, // W
+                {0, 1}, // E
+
+                {1, 0},// S
+                {1, -1}, // SW
+                {1, 1} // SE
+        };
+
+        for (int[] delta : coordinateDelta) {
+            processContinent(row + delta[0], col + delta[1], continent);
+        }
     }
 
     private boolean isProcessed(int row, int col) {
