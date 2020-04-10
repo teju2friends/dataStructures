@@ -37,7 +37,7 @@ public class Globe {
                 processContinent(row, col, continent);
 
                 if (continent.getTotalNumberOfCountries() > 0)
-                    addContinents(continent);
+                    continents.add(continent);
             }
         }
     }
@@ -73,12 +73,7 @@ public class Globe {
     }
 
     private boolean inRange(int row, int col) {
-        return row >= 0 && row < this.rows
-                && col >= 0 && col < this.cols;
-    }
-
-    private void addContinents(Continent continent) {
-        continents.add(continent);
+        return row >= 0 && row < this.rows && col >= 0 && col < this.cols;
     }
 
     public List<Continent> getContinents() {
